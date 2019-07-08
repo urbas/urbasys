@@ -1,0 +1,12 @@
+/.idea/
+/*.iml
+/.vscode/
+
+# Python stuff
+.venv/
+__pycache__/
+.eggs/
+*.egg-info/
+test-results/
+.coverage*
+.pytest_cache
