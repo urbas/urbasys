@@ -1,0 +1,21 @@
+
+language: python
+python:
+  - '3.7'
+install:
+  - pip install -e .
+  - pip install -r requirements_dev.txt
+script:
+  - black --check setup.py tests urbasys
+  - flake8 setup.py tests urbasys
+  - pytest
+deploy:
+  provider: pypi
+  distributions: sdist bdist_wheel
+  user: urbas
+  password:
+    secure: eHk8hGRhK8mYKZFrkjHyNMTW2bL8s+hIsjPhFRiRD6M6Mz7fSu4blkKLo4S8UEI6PKyZ2GyGL2I5n2qt71K4L2YypPEQ9VG29PGDGIpyEb4s7KShR7dm1EsmhCmkqAfrItSsewedoJTE6lNKp5Z310e20UZA9Lmr9zMBLfWUE7tNFHhCZgiDgvCIrkz8G+Hl+DSRKsV9HfpSu3sUAjXl0xF3jq2CEzngRWNsz0/LD+S2YfMwI0TCmLOjMp1Y3czYJH7UuVh0i5+nABxv8BuFXe+6m8GtM+xDyNsR7BBop711U49n9nN6n4jH3Y/JhCBHUJudtiFYT491kByiR362c9jUlFAilYj+Aq5JmbO8b9nSgmPLD1UNyAd45RgMMTy+enLNguG6TzTwuaba9Ddpbw3pcY13+QNsyB7n98Hz/ybkm0dhJxhdqXqgdXPi78kL9XzI3w30tZQRI663ZWYVxEg/44ILnETeEGszeMlqFF+C9XOF2KmI8L5iDZyDulD1rVkoY0wkTqr+GhxdlN+sFZy1WCRFpDJBjcqo+qeqsiokGazeSbAwSOUmzXU75ZYXF8Qq54VexfJCECmlr51C6UAsQtTu+JOnRBt7jB096+z48My2b9VCbCj5M/56HD2nvdxpmN1omm7mJt7qczG9BLTs2jAkldJrYAFNURZwHc0=
+  on:
+    tags: true
+    repo: urbas/urbasys
+    python: '3.7'
