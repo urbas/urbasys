@@ -31,13 +31,10 @@
         ];
 
         pyEnv = python3.withPackages(_: checkInputs ++ devInputs ++ propagatedBuildInputs);
+        nixpkgs-cache = pkgs.runCommand "nixpkgs" { } "mkdir $out && ln -s ${nixpkgs} $out/$(basename ${nixpkgs})";
+        devEnv = [ pyEnv nixpkgs-cache ];
 
-        devEnv = stdenvNoCC.mkDerivation {
-          name = "devEnv";
-          buildInputs = [ pyEnv ];
-        };
-
-        pkg = python3Packages.buildPythonPackage {
+        pkg = python3Packages.buildPythonApplication {
           pname = "urbasys";
           version = "local";
           src = lib.cleanSourceWith { src = ./.; };
@@ -48,8 +45,8 @@
         packages.${system} = {
           urbasys = pkg;
           default = pkg;
-          devEnv = buildEnv { name = "devEnv"; paths = [ pyEnv ]; };
+          devEnv = buildEnv { name = "devEnv"; paths = devEnv; };
         };
-        devShells.${system} = { default = devEnv; };
+        devShells.${system} = { default = pkg; };
       });
 }
