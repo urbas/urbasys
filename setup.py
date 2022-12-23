@@ -3,7 +3,7 @@
 
 """The setup script."""
 
-from setuptools import setup, find_packages
+from setuptools import setup, find_namespace_packages
 
 
 setup(
@@ -18,6 +18,6 @@ setup(
     include_package_data=True,
     keywords="urbasys",
     name="urbasys",
-    packages=find_packages(include=["urbasys"]),
+    packages=find_namespace_packages(include=["urbasys", "urbasys.*"]),
     test_suite="tests",
 )

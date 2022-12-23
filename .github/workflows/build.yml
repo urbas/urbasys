@@ -36,5 +36,5 @@ jobs:
           set -x
           black --check urbasys tests setup.py
           flake8 setup.py tests urbasys
-          mypy urbasys tests
+          mypy -p tests -p urbasys
           pytest --cov=urbasys tests
