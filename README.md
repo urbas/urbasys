@@ -1,3 +1,3 @@
-# Urbasys [![Build](https://travis-ci.org/urbas/urbasys.svg?branch=master)](https://travis-ci.org/urbas/urbasys) [![pypi](https://badge.fury.io/py/urbasys.svg)](https://pypi.org/project/urbasys/)
+# Urbasys [![builder](https://github.com/urbas/urbasys/actions/workflows/build.yml/badge.svg)](https://github.com/urbas/urbasys/actions/workflows/build.yml)
 
 A set of tools to support my home automation setup.
