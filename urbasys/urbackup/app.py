@@ -68,9 +68,11 @@ def keep_last(backup_dates: Iterable[datetime], number_to_keep: int) -> List[dat
 
 
 def monthlies_to_keep(backup_dates: Iterable[datetime]) -> Set[datetime]:
-    month_buckets: Dict[int, datetime] = {}
+    month_buckets: Dict[datetime, datetime] = {}
     for cur_backup_date in backup_dates:
-        current_month = cur_backup_date.month
+        current_month = datetime(
+            year=cur_backup_date.year, month=cur_backup_date.month, day=1
+        )
         existing_backup_date = month_buckets.get(current_month)
         if existing_backup_date is None or cur_backup_date < existing_backup_date:
             month_buckets[current_month] = cur_backup_date

@@ -68,6 +68,18 @@ def test_retain_monthlies_keep_all(tmp_path, run):
     assert dir_2022_12_18.is_dir()
 
 
+def test_retain_monthlies_keep_many_years(tmp_path, run):
+    dir_2021_11_01 = mkdirs(tmp_path / "bak1" / "daily-2021-11-01T01:23:45.123456Z")
+    dir_2022_11_01 = mkdirs(tmp_path / "bak1" / "daily-2022-11-01T01:23:45.123456Z")
+    dir_2022_12_18 = mkdirs(tmp_path / "bak1" / "daily-2022-12-18T01:23:45.123456Z")
+
+    run(["retain-monthlies", "--keep-latest=1", str(tmp_path / "bak1")])
+
+    assert dir_2021_11_01.is_dir()
+    assert dir_2022_11_01.is_dir()
+    assert dir_2022_12_18.is_dir()
+
+
 def test_folder_to_datetime():
     assert folder_to_datetime(Path("daily-2019-06-13T02:02:40.603Z")) == datetime(
         2019, 6, 13, 2, 2, 40, 603000, tzinfo=dateutil.tz.tzutc()
