@@ -50,7 +50,7 @@ def retain_monthlies(
             for snapshot_dir in snapshot_dirs
         }
         all_dates = dates_2_snapshot_dirs.keys()
-        dates_to_retain = backups_to_keep(all_dates, keep_latest=keep_latest)
+        dates_to_retain = backups_to_keep(all_dates, keep_latest)
         for date_to_remove in sorted(set(all_dates) - dates_to_retain):
             if dry_run:
                 logging.info("Would remove %s", dates_2_snapshot_dirs[date_to_remove])

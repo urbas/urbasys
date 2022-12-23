@@ -47,6 +47,6 @@
           default = pkg;
           devEnv = buildEnv { name = "devEnv"; paths = devEnv; };
         };
-        devShells.${system} = { default = pkg; };
+        devShells.${system} = { default = pkg.overrideAttrs(oldAttrs: { nativeBuildInputs = oldAttrs.nativeBuildInputs ++ devInputs; }); };
       });
 }
