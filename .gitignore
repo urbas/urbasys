@@ -1,5 +1,4 @@
-/.idea/
-/*.iml
+# Editors
 /.vscode/
 
 # Python stuff
@@ -10,3 +9,6 @@ __pycache__/
 test-results/
 .coverage*
 .pytest_cache
+
+# Nix stuff
+.direnv
