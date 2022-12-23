@@ -17,14 +17,17 @@
 
         propagatedBuildInputs = with python3Packages; [
           click
+          dateutils
           requests
         ];
 
         devInputs = with python3Packages; [
           black
           flake8
+          mypy
           pytest
           pytest-watch
+          types-dateutil
         ];
 
         pyEnv = python3.withPackages(_: checkInputs ++ devInputs ++ propagatedBuildInputs);
