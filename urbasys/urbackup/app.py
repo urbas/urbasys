@@ -1,6 +1,10 @@
 import click
+from datetime import timedelta
 from pathlib import Path
 from typing import Iterable
+
+# this library does not come with type stubs, so we tell mypy to ignore it
+import pytimeparse  # type: ignore
 
 from urbasys import log_utils
 from urbasys.urbackup import retention
@@ -35,3 +39,26 @@ def retain_monthlies(
 ) -> None:
     for backup_root_dir in backups_root_dirs:
         retention.retain_monthlies(backup_root_dir, dry_run, keep_latest)
+
+
+@main.command(
+    name="delete-old",
+    help="Deletes backup folders older than a certain amount of time.",
+)
+@click.argument(
+    "backups-root-dirs",
+    nargs=-1,
+    type=click.Path(path_type=Path, dir_okay=True, exists=True),
+)
+@click.option("-n", "--dry-run", is_flag=True)
+@click.option(
+    "--max-age",
+    required=True,
+    type=lambda arg: timedelta(seconds=pytimeparse.parse(arg)),
+    help="The age of.",
+)
+def delete_old(
+    backups_root_dirs: Iterable[Path], dry_run: bool, max_age: timedelta
+) -> None:
+    for backup_root_dir in backups_root_dirs:
+        retention.delete_old(backup_root_dir, dry_run, max_age)
