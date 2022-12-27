@@ -31,10 +31,12 @@ jobs:
         run: |
           [ -f /home/runner/.nix-profile/etc/profile.d/nix.sh ] || sh <(curl -L https://nixos.org/nix/install) --no-daemon
           . /home/runner/.nix-profile/etc/profile.d/nix.sh
+          export PIP_DISABLE_PIP_VERSION_CHECK=1
           eval "$(nix print-dev-env)"
 
           set -x
+          nix build -L
           black --check urbasys tests setup.py
           flake8 setup.py tests urbasys
           mypy -p tests -p urbasys
-          pytest --cov=urbasys tests
+
