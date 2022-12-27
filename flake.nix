@@ -11,6 +11,7 @@
     in forSupportedSystems ({ pkgs, system, ... }: with pkgs;
       let
         checkInputs = with python3Packages; [
+          freezegun
           pytestCheckHook
         ];
 
@@ -23,7 +24,6 @@
         devInputs = with python3Packages; [
           black
           flake8
-          freezegun
           mypy
           pytest
           pytest-cov
