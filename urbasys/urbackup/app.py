@@ -55,10 +55,16 @@ def retain_monthlies(
     "--max-age",
     required=True,
     type=lambda arg: timedelta(seconds=pytimeparse.parse(arg)),
-    help="The age of.",
+    help="Snapshots older than this will be deleted.",
+)
+@click.option(
+    "--min-keep",
+    default=5,
+    type=int,
+    help="The minimum number of snapshots to keep (even if they are older than `--max-age`).",
 )
 def delete_old(
-    backups_root_dirs: Iterable[Path], dry_run: bool, max_age: timedelta
+    backups_root_dirs: Iterable[Path], dry_run: bool, max_age: timedelta, min_keep: int
 ) -> None:
     for backup_root_dir in backups_root_dirs:
-        retention.delete_old(backup_root_dir, dry_run, max_age)
+        retention.delete_old(backup_root_dir, dry_run, max_age, min_keep)

@@ -8,13 +8,17 @@ import dateutil.tz
 from dateutil.parser import isoparse
 
 
-def delete_old(backups_root_dir: Path, dry_run: bool, max_age: timedelta) -> None:
+def delete_old(
+    backups_root_dir: Path, dry_run: bool, max_age: timedelta, min_keep: int = 0
+) -> None:
     now = datetime.now(tz=dateutil.tz.tzutc())
+    snapshots = get_parsed_snapshot_dirs(backups_root_dir)
+    to_retain = keep_last(snapshots, min_keep)
     for snapshot_dir, timestamp in sorted(
-        get_parsed_snapshot_dirs(backups_root_dir).items(),
+        snapshots.items(),
         key=lambda path_and_timestamp: path_and_timestamp[1],
     ):
-        if timestamp >= now - max_age:
+        if timestamp >= now - max_age or snapshot_dir in to_retain:
             continue
         if dry_run:
             logging.info("Would remove %s", snapshot_dir)
