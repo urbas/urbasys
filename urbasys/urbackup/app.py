@@ -3,14 +3,28 @@ from datetime import timedelta
 from pathlib import Path
 from typing import Iterable
 
-# this library does not come with type stubs, so we tell mypy to ignore it
-import pytimeparse  # type: ignore
+import pytimeparse
+
 
 from urbasys import log_utils
 from urbasys.urbackup import retention
 
 
 BACKUP_ROOT_DIR = "/urbackup/mirror"
+
+
+def parse_max_age(arg: str) -> timedelta:
+    """Parse a max-age string using pytimeparse.
+
+    Returns a ``timedelta``. Raises ``click.BadParameter`` with a helpful
+    message if the format is invalid.
+    """
+    seconds = pytimeparse.parse(arg)
+    if seconds is None:
+        raise click.BadParameter(
+            f"Invalid age format '{arg}'. See https://github.com/wroberts/pytimeparse for supported formats."
+        )
+    return timedelta(seconds=seconds)
 
 
 @click.group()
@@ -54,7 +68,7 @@ def retain_monthlies(
 @click.option(
     "--max-age",
     required=True,
-    type=lambda arg: timedelta(seconds=pytimeparse.parse(arg)),
+    type=parse_max_age,
     help="Snapshots older than this will be deleted.",
 )
 @click.option(

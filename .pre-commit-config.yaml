@@ -1,0 +1,28 @@
+repos:
+  - repo: local
+    hooks:
+      - id: ruff-check
+        name: ruff check
+        description: "Run 'ruff check' for extremely fast Python linting"
+        entry: ruff check --force-exclude
+        language: python
+        types_or: [python, pyi, jupyter]
+        args: ["--fix"]
+        require_serial: true
+        additional_dependencies: []
+
+      - id: ruff-format
+        name: ruff format
+        description: "Run 'ruff format' for extremely fast Python formatting"
+        entry: ruff format --force-exclude
+        language: python
+        types_or: [python, pyi, jupyter]
+        args: []
+        require_serial: true
+        additional_dependencies: []
+      - id: treefmt
+        entry: treefmt
+        language: system
+        name: treefmt
+        pass_filenames: false
+        require_serial: true

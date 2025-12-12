@@ -1,0 +1,15 @@
+on-unmatched = "info"
+walk = "git"
+
+[formatter.md]
+command = "prettier"
+includes = [ "*.md" ]
+options = [
+  "--write",
+  "--prose-wrap=always",
+]
+
+[formatter.nix]
+command = "nixfmt"
+includes = [ "*.nix" ]
+options = []
