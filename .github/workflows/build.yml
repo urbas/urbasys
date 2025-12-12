@@ -3,40 +3,19 @@ on: [push, pull_request]
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Nix Setup
-        run: |
-          set -x
-          sudo mkdir /nix
-          sudo chown $USER /nix
-          mkdir -p $HOME/.config/nix
-          echo 'experimental-features = nix-command flakes' > $HOME/.config/nix/nix.conf
-
-      - name: Cache Nix DevEnv
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-nix-dev-env
-        with:
-          path: |
-            /nix
-            /home/runner/.bash_profile
-            /home/runner/.nix-profile
-          key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/flake.nix', '**/flake.lock') }}
-
-      - name: Build
-        run: |
-          [ -f /home/runner/.nix-profile/etc/profile.d/nix.sh ] || sh <(curl -L https://nixos.org/nix/install) --no-daemon
-          . /home/runner/.nix-profile/etc/profile.d/nix.sh
-          export PIP_DISABLE_PIP_VERSION_CHECK=1
+      - uses: actions/checkout@main
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - run: |
           eval "$(nix print-dev-env)"
 
-          set -x
-          nix build -L
-          black --check urbasys tests setup.py
-          flake8 setup.py tests urbasys
-          mypy -p tests -p urbasys
+          parallel --tagstring "{}>" ::: \
+              "pyright" \
+              "pytest" \
+              "ruff check" \
+              "ruff format --check" \
+              "treefmt --ci"
+      - run: "nix build -Lv"
 

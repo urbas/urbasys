@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["urbasys*"]
+
+[project]
+name = "urbasys"
+version = "0.1.0"
+description = "A collection of applications to support the Urbas System."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = ["click", "dateutils", "pytimeparse"]
+
+[project.scripts]
+urbackup = "urbasys.urbackup.app:main"
